@@ -6,8 +6,9 @@ function setup() {
   noCanvas();
 
   let options = {
-    dataUrl: "data/stamm-bank.csv",
-    inputs: ["matches", "goals", "position"],
+    dataUrl: "data/top7-bundesliga.csv",
+    inputs: ["defoff", "matches", "mins", "goals", "assists", "yellow_cards"],
+    //defoff,matches,mins,goals,assists,yellow_cards,prediction
     outputs: ["prediction"],
     task: "classification",
     debug: true,
@@ -29,7 +30,7 @@ function setup() {
     model.train(trainOptions, whileTraining, finishedTraining);
   });
 
-  trainButton.position(10, 400);
+  trainButton.position(10, 570);
 }
 
 function whileTraining(epoch, loss) {
@@ -41,15 +42,22 @@ function finishedTraining() {
   predictButton.show();
   trainButton.hide();
 }
-
+//defoff,matches,mins,goals,assists,yellow_cards,prediction
 function classify() {
+  let defoff = parseInt(select("#defoff").elt.value);
   let matches = parseInt(select("#matches").value());
+  let mins = parseInt(select("#mins").value());
   let goals = parseInt(select("#goals").value());
-  let position = parseInt(select("#position").elt.value);
+  let assists = parseInt(select("#assists").value());
+  let yellow_cards = parseInt(select("#yellow_cards").value());
+  
 
   let userInputs = {
     matches: matches,
+    mins: mins,
     goals: goals,
+    assists: assists,
+    yellow_cards: yellow_cards,
     position: position,
   };
 
@@ -62,9 +70,9 @@ function gotResults(error, result) {
   } else {
     console.log(result);
     if (result[0].label == "No") {
-      outcome = "Bank!";
+      outcome = "Bankwärmer!";
     } else {
-      outcome = "Startaufstellung!";
+      outcome = "Start 11!";
     }
     
     select("#result").html(
