@@ -30,7 +30,7 @@ function setup() {
     model.train(trainOptions, whileTraining, finishedTraining);
   });
 
-  trainButton.position(10, 570);
+  trainButton.position(300, 507);
 }
 
 function whileTraining(epoch, loss) {
@@ -44,6 +44,7 @@ function finishedTraining() {
 }
 //defoff,matches,mins,goals,assists,yellow_cards,prediction
 function classify() {
+  let club = parseInt(select("#club").elt.value);
   let defoff = parseInt(select("#defoff").elt.value);
   let matches = parseInt(select("#matches").value());
   let mins = parseInt(select("#mins").value());
@@ -53,12 +54,12 @@ function classify() {
   
 
   let userInputs = {
+    defoff: defoff,
     matches: matches,
     mins: mins,
     goals: goals,
     assists: assists,
     yellow_cards: yellow_cards,
-    position: position,
   };
 
   model.classify(userInputs, gotResults);
@@ -76,7 +77,7 @@ function gotResults(error, result) {
     }
     
     select("#result").html(
-      " " + outcome
+      "" + outcome
     );
   }
 }
